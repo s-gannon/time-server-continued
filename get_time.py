@@ -1,26 +1,48 @@
 from gps import *
+import threading
 import datetime
+import json
 import time
 import os
+# import gpsd
 
-gpsd = gps(mode=WATCH_ENABLE) #global gpsd instance
+class gps_poll():
+    def __init__():
+        threading.Thread.__init__(self)
+        self.session = gps(mode=WATCH_ENABLE)
+        self.current_value = None
 
-#returns 3-tuple with latitude, longitude (both floats), and time
-def get_latitude_longitude_time():
-    global gpsd
-    next_gpsd = gpsd.next()
-    return (gpsd.fix.latitude, gpsd.fix.longitude, gpsd.utc)
+    def get_current_value(self):
+        return self.current_value
+
+    def run(self):
+        try:
+            while True:
+                self.current_value = self.session.next()
+                time.sleep(1)
+        except StopIteration:
+            printf("Thread interrupted via StopIteration")
 
 if __name__ == "__main__":
+    gpsp = gps_poll()
     try:
+        gpsp.start()
         while True:
-            lat_lon_time = get_latitude_longitude_time()
-            dt = datetime.datetime.strptime(f"{lat_lon_time[2]}","%Y%m%dT%H%M")
-            unix_time = dt.timestamp()
-            file = open("current_gps.txt", "w")
-
-            file.write(f"{lat_lon_time[0]}\n{lat_lon_time[1]}\n{unix_time}")
-            file.close()
-            time.sleep(5)
-    except KeyboardInterrupt:
-        print("Node interrupted by KeyboardInterrupt!")
+            report = gpsp.get_current_value()
+            try:
+                if report.keys()[0] == "epx":
+                    file = open("current_gps_data.txt", "w")
+                    utc_time = report["time"]
+                    dt = datetime.datetime.strptime(utc_time, "%Y%m%dT%H%M")
+                    unix_time = dt.timestamp()
+                    json_str = json.dumps({"lat":f"{report["lat"]}", "lon":f"{report["lon"]}", "unix_time":f"{unix_time}"})
+                    file.write(json_str)
+                time.sleep(2)
+            except(AttributeError, KeyError):
+                print("Error occured getting the values")
+            time.sleep(2)
+    except(KeyboardInterrupt, SystemExit):
+        print("Killing the GPS thread...")
+        gpsp.running = False
+        gpsp.join()
+    print("Exiting...")
