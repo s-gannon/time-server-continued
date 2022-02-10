@@ -1,25 +1,26 @@
 from gps import *
+import datetime
 import time
+import os
 
-#returns 2-tuple with latitude and longitude (both floats)
-def get_longitude_latitude():
+gpsd = gps(mode=WATCH_ENABLE) #global gpsd instance
+
+#returns 3-tuple with latitude, longitude (both floats), and time
+def get_latitude_longitude_time():
+    global gpsd
     next_gpsd = gpsd.next()
-    if next_gpsd["class"] == "TPV":
-        lat_lon = (getattr(next_gpsd, "lat", "Unknown"),
-                   getattr(next_gpsd, "lon", "Unknown"))
-        return lat_lon
-
-#takes in 2-tuple with latitude and longitude and returns the time at that location
-def get_time_with_loc(lat_lon):
-    pass
-
-def get_time_with_rtc():
-    pass
-
+    return (gpsd.fix.latitude, gpsd.fix.longitude, gpsd.utc)
 
 if __name__ == "__main__":
     try:
         while True:
-            pass
+            lat_lon_time = get_latitude_longitude_time()
+            dt = datetime.datetime.strptime(f"{lat_lon_time[2]}","%Y%m%dT%H%M")
+            unix_time = dt.timestamp()
+            file = open("current_gps.txt", "w")
+
+            file.write(f"{lat_lon_time[0]}\n{lat_lon_time[1]}\n{unix_time}")
+            file.close()
+            time.sleep(5)
     except KeyboardInterrupt:
-        print("Node interrupted by KeyboardInterrupt")
+        print("Node interrupted by KeyboardInterrupt!")
