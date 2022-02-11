@@ -22,26 +22,34 @@ func localSolarTime(long float64, time time.Time) float64 {
 	return time.Now()/* current? */ + (timeCorrectionFactor(long) / 60)
 }
 
-func localStandardTimeMeridian() float64 {
+func localStandardTimeMeridian() int {
 	// zone: UTC +- what? Eg: UTC-6 == 6
 	_, zone := time.Now().Zone()
-	return 15 * math.Abs(zone)
+	return 15 * intAbs(zone)
 }
 
 // 180/pi = radians to degrees, pi/180 = degrees to radians
 
 func equationOfTime() float64 {
 	// days: specifically, days since the start of the year. Eg. Feb 2 should be 32 (0 is Jan 1)
-	days := time.YearDay()
-	b := (0.9863) * (days - 81)
+	days := time.Now().YearDay()
+	b := 0.9863 * float64(days - 81)
 	return 9.87 * math.Sin(2 * b) - 7.53 * math.Cos(b) - 1.5 * math.Sin(b)
 }
 
 func timeCorrectionFactor(long float64) float64 {
-	return 4 * (long - localStandardTimeMeridian()) + equationOfTime()
+	return 4 * (long - float64(localStandardTimeMeridian())) + equationOfTime()
 }
 
 // returns the angle of the sun in degrees
-func hourAngle() int {
-	return 15 * (localSolarTime() - 12)
+func hourAngle(localSolarTime float64) float64 {
+	return 15 * (localSolarTime - 12)
+}
+
+func intAbs(x int) int {
+	if x < 0 {
+		x = -x
+	}
+
+	return x
 }
