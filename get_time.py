@@ -43,6 +43,6 @@ if __name__ == "__main__":
             time.sleep(2)
     except(KeyboardInterrupt, SystemExit):
         print("Killing the GPS thread...")
-        gpsp.running = False
-        gpsp.join()
+        gpsp.running = False    #tell the thread to stop running
+        gpsp.join()     #rejoin the threads back to main thread
     print("Exiting...")
