@@ -4,15 +4,15 @@ import datetime
 import json
 import time
 import os
-# import gpsd
+# might use gpsd instead; look into later
 
-class gps_poll():
-    def __init__():
+class gps_poll():   #threaded GPS polling class
+    def __init__(): #create the thread
         threading.Thread.__init__(self)
         self.session = gps(mode=WATCH_ENABLE)
         self.current_value = None
 
-    def get_current_value(self):
+    def get_current_value(self):    #get the current data from GPSD
         return self.current_value
 
     def run(self):
@@ -26,17 +26,17 @@ class gps_poll():
 if __name__ == "__main__":
     gpsp = gps_poll()
     try:
-        gpsp.start()
-        while True:
-            report = gpsp.get_current_value()
+        gpsp.start()    #start thread
+        while True:     #run forever until Ctrl-C
+            report = gpsp.get_current_value()   #gets data from gpsd
             try:
                 if report.keys()[0] == "epx":
                     file = open("current_gps_data.txt", "w")
-                    utc_time = report["time"]
-                    dt = datetime.datetime.strptime(utc_time, "%Y%m%dT%H%M")
+                    utc_time = report["time"]   #time in UTC
+                    dt = datetime.datetime.strptime(utc_time, "%Y%m%dT%H%M")    #convert to Unix time
                     unix_time = dt.timestamp()
                     json_str = json.dumps({"lat":f"{report["lat"]}", "lon":f"{report["lon"]}", "unix_time":f"{unix_time}"})
-                    file.write(json_str)
+                    file.write(json_str)    #write json to file to be read later
                 time.sleep(2)
             except(AttributeError, KeyError):
                 print("Error occured getting the values")
