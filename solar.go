@@ -23,22 +23,21 @@ func SolarTime(long float64) string {
 
 // Calculate the difference in time between standard time and solar time.
 func timeCorrectionFactor(long float64) float64 {
-	return 4 * (float64(localStandardTimeMeridian()) - long) + equationOfTime()
+	return 4 * (float64(localStandardTimeMeridian(time.Now())) - long) + equationOfTime(time.Now().YearDay())
 }
 
 // Get standard meridian for time zone in degrees.
 // 75 Eastern ; 90 Central ; 105 Mountain ; 120 Pacific
-func localStandardTimeMeridian() int {
+func localStandardTimeMeridian(t time) int {
 	// UTC difference; Eg: UTC-6 == 6 & UTC+7 == 7
-	_, zone := time.Now().Zone()
-	// time.Now().Zone() returns how far away from UTC a person is in seconds. Divide by 3600 to get hours.
+	_, zone := t.Zone()
+	// Zone() returns how far away from UTC a person is in seconds. Divide by 3600 to get hours.
 	return 15 * intAbs(zone/3600)
 }
 
 // TODO: Need to verify and find out if the formula uses radians or degrees
-func equationOfTime() float64 {
+func equationOfTime(days int) float64 {
 	// days: specifically, days since the start of the year. Eg. Feb 2 should be 32 (0 is Jan 1)
-	days := time.Now().YearDay()
 	b := 0.9863 * float64(days - 81)
 	return 229.2 * (0.000075 + 0.001868 * math.Cos(b) - 0.032077 * math.Sin(b) - 0.014615 * math.Cos(2 * b) - 0.04089 * math.Sin(2 * b))
 }
