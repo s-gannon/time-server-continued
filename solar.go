@@ -6,46 +6,44 @@ import (
 	"math"
 )
 
-// following the functions detailed in this website: https://www.pveducation.org/pvcdrom/properties-of-sunlight/solar-time
-
 // make sure all Sin/Cos are in Radians or converted
+// 180/pi = radians to degrees, pi/180 = degrees to radians
 
 func main() {
-	current := time.Now().Local()
-	long := -87.037403 // TODO: don't hardcode this value
+	long := 87.037403 // TODO: don't hardcode this value
 
-	fmt.Println(localSolarTime(long, current))
+	fmt.Println(SolarTime(long))
 }
 
 // calculate local solar time
-func localSolarTime(long float64, time time.Time) float64 {
-	return time.Now()/* current? */ + (timeCorrectionFactor(long) / 60)
+// TODO: need to properly calculate the difference in time. Also make sure daylight savings is considered
+func SolarTime(long float64) string {
+	return time.Now().Add(time.ParseDuration(timeCorrectionFactor(long))).Format(time.ANSIC)
 }
 
+// Calculate the difference in time between standard time and solar time.
+func timeCorrectionFactor(long float64) float64 {
+	return 4 * (float64(localStandardTimeMeridian()) - long) + equationOfTime()
+}
+
+// Get standard meridian for time zone in degrees.
+// 75 Eastern ; 90 Central ; 105 Mountain ; 120 Pacific
 func localStandardTimeMeridian() int {
-	// zone: UTC +- what? Eg: UTC-6 == 6
+	// UTC difference; Eg: UTC-6 == 6 & UTC+7 == 7
 	_, zone := time.Now().Zone()
-	return 15 * intAbs(zone)
+	// time.Now().Zone() returns how far away from UTC a person is in seconds. Divide by 3600 to get hours.
+	return 15 * intAbs(zone/3600)
 }
 
-// 180/pi = radians to degrees, pi/180 = degrees to radians
-
+// TODO: Need to verify and find out if the formula uses radians or degrees
 func equationOfTime() float64 {
 	// days: specifically, days since the start of the year. Eg. Feb 2 should be 32 (0 is Jan 1)
 	days := time.Now().YearDay()
 	b := 0.9863 * float64(days - 81)
-	return 9.87 * math.Sin(2 * b) - 7.53 * math.Cos(b) - 1.5 * math.Sin(b)
+	return 229.2 * (0.000075 + 0.001868 * math.Cos(b) - 0.032077 * math.Sin(b) - 0.014615 * math.Cos(2 * b) - 0.04089 * math.Sin(2 * b))
 }
 
-func timeCorrectionFactor(long float64) float64 {
-	return 4 * (long - float64(localStandardTimeMeridian())) + equationOfTime()
-}
-
-// returns the angle of the sun in degrees
-func hourAngle(localSolarTime float64) float64 {
-	return 15 * (localSolarTime - 12)
-}
-
+// Calculate the absolute value of an integer. This prevents the need to convert to a float64 and back to use the built in abs function.
 func intAbs(x int) int {
 	if x < 0 {
 		x = -x
