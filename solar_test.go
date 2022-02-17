@@ -4,14 +4,14 @@ import (
 	"testing"
 )
 
-// unit test for calculating solar time
+// (TO DO) unit test for calculating solar time
 func TestSolarTime(t *testing.T) {
 	//if SolarTime() != {
 	//	t.Error()
 	//}
 }
 
-// unit test for finding the time correction factor between standard & solar time
+// (TO DO) unit test for finding the time correction factor between standard & solar time
 func TestTimeCorrectionFactor(t *testing.T) {
 	//if timeCorrectionFactor() != {
 	//	t.Error()
