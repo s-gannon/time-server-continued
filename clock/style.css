@@ -1,0 +1,54 @@
+#time {
+	/* Set the font of the displayed time. */
+	font-family: monospace;
+
+	/* Make the time centered vertically on the screen. */
+	position: absolute;
+	height: 50%;
+	margin: auto;
+	top: 0; left: 0; bottom: 0; right: 0;
+
+	/* Having said that, put the time slightly above center. */
+	padding-bottom: 5%;
+
+	/* Make the time centered horizontally on the screen. */
+	display: grid;
+	justify-items: center;
+
+	/* Put a gap between local and solar time which is relative to the height provided by the browser. */
+	row-gap: 3vh;
+}
+
+/* Set the font of the local time relative to the width of the browser. */
+#time-main {
+	font-size: 10vw;
+}
+
+/* Set the font of solar time relative to the width of the browser. */
+#time-solar {
+	font-size: 5vw;
+}
+
+footer {
+	/* Have the footer use a nice font. */
+	font-family: sans-serif;
+
+	/* Put the footer fixed at the bottom of the page. */
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+
+	/* Evenly display the items using available width. */
+	display: grid;
+	grid-template-areas: "copyright github about";
+
+	/* Give the text items some space on the sides. */
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+/* Remove the underline and blue text for urls in the footer. Keep all footer text consistent. */
+footer a:hover, footer a:visited, footer a:link, footer a:active {
+	color: black;
+	text-decoration: none;
+}
