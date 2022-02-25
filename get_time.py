@@ -1,48 +1,41 @@
-from gps import *
-import threading
-import datetime
-import json
-import time
 import os
-# might use gpsd instead; look into later
+import time
+import json
+import serial
+import datetime
 
-class gps_poll():   #threaded GPS polling class
-    def __init__(): #create the thread
-        threading.Thread.__init__(self)
-        self.session = gps(mode=WATCH_ENABLE)
-        self.current_value = None
+# takes in data string and outputs either None if there's no signal or
+# a 5-tuple containing GMT time, date, latitude, longitude, and unix
+# stamp
 
-    def get_current_value(self):    #get the current data from GPSD
-        return self.current_value
+def parse_gps(data):
+    if data[0:6] == "$GPRMC":
+        ser_data = data.split(",")
+        if ser_data[2] == "V":
+            print("No satellite data!")
+            return None
+        else:
+            gmt_time = ser_data[1].split(".")[0]    #gets rid of stupid decimal
+            date = ser_data[9]
+            lat = ser_data[3]
+            lon = ser_data[5]
 
-    def run(self):
-        try:
-            while True:
-                self.current_value = self.session.next()
-                time.sleep(1)
-        except StopIteration:
-            printf("Thread interrupted via StopIteration")
+            dt = dateime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
+            unix_time = dt.timestamp()
+            return (gmt_time, date, lat, lon, unix_time)
 
-if __name__ == "__main__":
-    gpsp = gps_poll()
-    try:
-        gpsp.start()    #start thread
-        while True:     #run forever until Ctrl-C
-            report = gpsp.get_current_value()   #gets data from gpsd
-            try:
-                if report.keys()[0] == "epx":
-                    file = open("current_gps_data.txt", "w")
-                    utc_time = report["time"]   #time in UTC
-                    dt = datetime.datetime.strptime(utc_time, "%Y%m%dT%H%M")    #convert to Unix time
-                    unix_time = dt.timestamp()
-                    json_str = json.dumps({"lat":f"{report["lat"]}", "lon":f"{report["lon"]}", "unix_time":f"{unix_time}"})
-                    file.write(json_str)    #write json to file to be read later
-                time.sleep(2)
-            except(AttributeError, KeyError):
-                print("Error occured getting the values")
-            time.sleep(2)
-    except(KeyboardInterrupt, SystemExit):
-        print("Killing the GPS thread...")
-        gpsp.running = False    #tell the thread to stop running
-        gpsp.join()     #rejoin the threads back to main thread
-    print("Exiting...")
+sleep_time = 10
+port = "/dev/serial0"
+ser = serial.Serial(port, baudrate = 9600, timeout = 2)
+
+while True:
+    data = ser.readline()
+    result = parse_gps(data)
+
+    if parsed_data != None:
+        file = open("current_gps_data.txt", "w")
+        json_str = json.dumps({"lat":f"{result[2]}", "lat":f"{result[3]}", "unix_time":f"{result[4]}"})
+
+        file.write(json_str)
+        file.close()
+    time.sleep(sleep_time)
