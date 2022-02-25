@@ -32,7 +32,7 @@ while True:
     data = ser.readline()
     result = parse_gps(data)
 
-    if parsed_data != None:
+    if result != None:
         file = open("current_gps_data.txt", "w")
         json_str = json.dumps({"lat":f"{result[2]}", "lat":f"{result[3]}", "unix_time":f"{result[4]}"})
 
