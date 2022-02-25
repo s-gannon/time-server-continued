@@ -22,6 +22,7 @@ def parse_gps(data):
 
             dt = dateime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
             unix_time = dt.timestamp()
+            print(f"{gmt_time} {date} {lat} {lon} {unix_time}")
             return (gmt_time, date, lat, lon, unix_time)
 
 sleep_time = 10
