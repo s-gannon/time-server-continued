@@ -2,17 +2,30 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"io/ioutil"
 	"math"
+	"os"
+	"strconv"
+	"time"
 )
 
 // make sure all Sin/Cos are in Radians or converted
 // 180/pi = radians to degrees, pi/180 = degrees to radians
 
 func main() {
-	long := 87.037403 // TODO: don't hardcode this value
+	bytes, err := ioutil.ReadAll(os.Stdin)
 
-	fmt.Println(SolarTime(long))
+	if err == nil {
+		long, err2 := strconv.ParseFloat(string(bytes), 64) // 87.037403
+		if err2 == nil {
+			fmt.Println(SolarTime(long))
+		} else {
+			fmt.Println("Longitude is not a parsable number.")
+		}
+	} else {
+		fmt.Println("Error reading stdin for longitude.")
+	}
+
 }
 
 // calculate local solar time
@@ -28,7 +41,7 @@ func timeCorrectionFactor(long float64) float64 {
 
 // Get standard meridian for time zone in degrees.
 // 75 Eastern ; 90 Central ; 105 Mountain ; 120 Pacific
-func localStandardTimeMeridian(t time) int {
+func localStandardTimeMeridian(t time.Time) int {
 	// UTC difference; Eg: UTC-6 == 6 & UTC+7 == 7
 	_, zone := t.Zone()
 	// Zone() returns how far away from UTC a person is in seconds. Divide by 3600 to get hours.
