@@ -25,10 +25,8 @@ def parse_gps(data):
             print(f"{gmt_time} {date} {lat} {lon} {unix_time}")
             return (gmt_time, date, lat, lon, unix_time)
 
-sleep_time = 10
-port = "/dev/serial0"
-ser = serial.Serial(port, baudrate = 9600, timeout = 2)
-
+sleep_time = 2
+ser = serial.Serial("/dev/serial0", baudrate = 9600, timeout = sleep_time)
 while True:
     data = ser.readline()
     result = parse_gps(data)
