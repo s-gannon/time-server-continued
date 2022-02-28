@@ -20,21 +20,23 @@ def parse_gps(data):
             lat = ser_data[3]
             lon = ser_data[5]
 
-            dt = dateime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
+            dt = datetime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
             unix_time = dt.timestamp()
             print(f"{gmt_time} {date} {lat} {lon} {unix_time}")
             return (gmt_time, date, lat, lon, unix_time)
 
-sleep_time = 2
-ser = serial.Serial("/dev/serial0", baudrate = 9600, timeout = sleep_time)
+sleep_time = 1
+ser = serial.Serial("/dev/serial0", 9600, timeout = sleep_time)
+ser.flushInput()
 while True:
-    data = ser.readline()
+    data = ser.readline().decode("ascii")
     result = parse_gps(data)
 
     if result != None:
-        file = open("current_gps_data.txt", "w")
-        json_str = json.dumps({"lat":f"{result[2]}", "lat":f"{result[3]}", "unix_time":f"{result[4]}"})
+        file = open("current_gps_data.json", "w")
+        json_str = json.dumps({"lat":f"{result[2]}", "lon":f"{result[3]}", "unix_time":f"{result[4]}"})
 
         file.write(json_str)
         file.close()
     time.sleep(sleep_time)
+ser.close()
