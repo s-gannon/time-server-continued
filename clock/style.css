@@ -35,7 +35,6 @@ footer {
 
 	/* Put the footer fixed at the bottom of the page. */
 	position: fixed;
-	width: 100%;
 	bottom: 0;
 
 	/* Evenly display the items using available width. */
@@ -43,8 +42,8 @@ footer {
 	grid-template-areas: "copyright github about";
 
 	/* Give the text items some space on the sides. */
-	padding-left: 5%;
-	padding-right: 5%;
+	margin: auto;
+	width: 100%;
 }
 
 /* Remove the underline and blue text for urls in the footer. Keep all footer text consistent. */
@@ -62,6 +61,10 @@ footer a:hover, footer a:visited, footer a:link, footer a:active {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-bottom: 50px;
 }
 
 #team-members {
