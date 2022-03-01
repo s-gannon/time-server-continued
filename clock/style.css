@@ -52,3 +52,45 @@ footer a:hover, footer a:visited, footer a:link, footer a:active {
 	color: black;
 	text-decoration: none;
 }
+
+/* about.html specific CSS */
+
+#about-us {
+	font-family: sans-serif;
+
+	/* center the items in the about page "article" */
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+#team-members {
+	/* arrange the members in a row */
+	display: grid;
+	grid-template-areas: "a b c";
+
+	/* shift the cards over to the left slightly */
+	margin-left: 15%;
+}
+
+.member {
+	/* adjust position of items in each member "card" */
+	width: 50%;
+	text-align: center;
+	padding: 20px;
+}
+
+.member img {
+	/* shrink the image to only 75% of the available card space */
+	width: 75%;
+
+	/* make the images rounded */
+	border-radius: 50%;
+}
+
+.member a {
+	/* add a black dotted underline under the URL to find about more */
+	color: black;
+	text-decoration: none;
+	border-bottom: black dotted 2px;
+}
