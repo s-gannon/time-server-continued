@@ -29,6 +29,11 @@
 	font-size: 4vw;
 }
 
+/* Display the current date. */
+#date {
+	font-size: 3vw;
+}
+
 footer {
 	/* Have the footer use a nice font. */
 	font-family: sans-serif;
