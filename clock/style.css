@@ -21,12 +21,17 @@
 
 /* Set the font of the local time relative to the width of the browser. */
 #time-main {
-	font-size: 10vw;
+	font-size: 5vw;
 }
 
 /* Set the font of solar time relative to the width of the browser. */
 #time-solar {
-	font-size: 5vw;
+	font-size: 4vw;
+}
+
+/* Display the current date. */
+#date {
+	font-size: 3vw;
 }
 
 footer {
