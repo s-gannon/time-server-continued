@@ -4,15 +4,16 @@
         <meta charset="utf-8">
         <title>Campanile Time Clock</title>
         <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
         <!-- TODO: show site favicon -->
     </head>
     <body>
         <main id="time">
             <!-- time inside of the "time datetime" section is for screereader accessibility -->
             <!-- time between the tags is the time visible on the screen -->
-            <span id="time-main"><time datetime="">Clock Time (CST): 15:00:27</time></span>
-            <span id="time-solar"><time datetime="">Solar Time: 12:32:12</time></span>
-            <span id="date"><date date="">March 3, 2022</date></span>
+            <span id="time-main">Clock Time (CST): <time id="main-time" datetime="">15:00:27</time></span>
+            <span id="time-solar">Solar Time: <span id="solar-time">12:32:12</span></span>
+            <span><time id="date" datetime="2022-03-12">March 12, 2022</time></span>
         </main>
 
         <footer>
