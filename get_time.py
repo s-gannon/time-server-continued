@@ -24,8 +24,8 @@ def parse_gps(data):
 
             dt = datetime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
             unix_time = dt.timestamp()
-            print(f"{gmt_time} {date} {lat} {lon} {unix_time}")
-            return (gmt_time, date, lat, lon, unix_time)
+            print(f"{gmt_time} {date} {float(lat)/100} {float(lon)/100} {unix_time}")
+            return (gmt_time, date, float(lat)/100, float(lon)/100, unix_time)
 
 sleep_time = 1
 ser = serial.Serial("/dev/serial0", 9600, timeout = sleep_time)
