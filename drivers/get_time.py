@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
+import os
 import time
 import json
-import datetime
 import serial
+import datetime
 
 # takes in data string and outputs either None if there's no signal or
 # a 5-tuple containing GMT time, date, latitude, longitude, and unix
@@ -28,8 +29,8 @@ def parse_gps(data):
             print(f"{gmt_time} {date} {(float(lat)/100) * lat_dir} {(float(lon)/100) * lon_dir} {unix_time}")
             return (gmt_time, date, (float(lat)/100) * lat_dir, (float(lon)/100) * lon_dir, unix_time)
 
-SLEEP_TIME = 1
-ser = serial.Serial("/dev/serial0", 9600, timeout = SLEEP_TIME)
+sleep_time = 1
+ser = serial.Serial("/dev/serial0", 9600, timeout = sleep_time)
 ser.flushInput()
 while True:
     data = ser.readline().decode("ascii")
@@ -42,5 +43,5 @@ while True:
         file.write(json_str)
         file.write("\n")
         file.close()
-    time.sleep(SLEEP_TIME)
+    time.sleep(sleep_time)
 ser.close()
