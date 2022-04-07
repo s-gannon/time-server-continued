@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import serial
 import re
+import serial
 
 sp = serial.Serial('/dev/serial0', 9600, timeout=1.0)
 sp.flushInput()
@@ -14,6 +14,6 @@ while True:
         continue
     except KeyboardInterrupt:
         print('Keyboard Interrupt.')
-        break;
+        break
 print('Exiting...')
 sp.close()
