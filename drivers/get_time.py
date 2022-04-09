@@ -36,7 +36,7 @@ while True:
     result = parse_gps(data)
 
     if result != None:
-        file = open("current_gps_data.json", "w")
+        file = open("/home/pi/data/current_gps_data.json", "w")
         json_str = json.dumps({"lat":f"{result[2]}", "lon":f"{result[3]}", "unix_time":f"{result[4]}"})
 
         file.write(json_str)
