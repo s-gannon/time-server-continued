@@ -10,7 +10,7 @@ import datetime
 # stamp
 
 def parse_gps(data):
-    if data[0:6] == "$GPRMC":
+    if data[0:6] == "$GPRMC" or data[0:6] == "$GNRMC":  #handles different standards
         ser_data = data.split(",")
         if ser_data[2] == "V":
             print("No satellite data!")
