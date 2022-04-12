@@ -3,17 +3,33 @@
     <head>
         <meta charset="utf-8">
         <title>About The Team/Project</title>
-        <link rel="stylesheet" href="/static/style.css">
-        <!-- TODO: show site favicon -->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <main id="about-us">
             <h1>About the Campanile Time Server</h1>
 
-            <p>The Campanile Time Server was developed to help keep accurate time
-            and calculate solar time all year round.  Our goal was to create a
-            sustainable product at the request of Professor Venstrom for the
-            James S. Markiewicz Solar Energy Research Facility.</p>
+            <!-- Abstract -->
+            <p>The Campanile Time Server was created as a way to create a high-reliability,
+            accurate time source for the James S. Markiewicz Solar Energy Research
+            Facility at Valparaiso University. Prior methods were not consistent
+            or reliable enough for research use and for proper function of the facility.
+            This project seeks to fix that by designing a software suite that leverages
+            existing time information in a form compatible with the operational
+            considerations of the facility. This software utilizes Go and Python,
+            in files that connect to produce informative outputs on a display. These
+            languages were chosen for their superior library support in web and
+            GPIO interfacing. The project requirements necessitated a suitably robust
+            case containing multiple Raspberry Pis that can interface with the software
+            suite and provide failover redundancy. The group chose Raspberry Pis
+            due to the global supply chain limiting hardware options. Additionally,
+            other products did not have the variety of hardware accessories. The
+            software components include a conversion script from clock time to solar
+            time, scripts to parse data from the hardware devices, and a basic website
+            to display time in the facility. The program files were complemented with
+            unit test files to ensure valid results and continuous integration using
+            Jenkins. The project proceeded with an Agile Development Method, as the
+            team met regularly with their customer to discuss progress and receive feedback.</p>
 
             <h2>The Team</h2>
 

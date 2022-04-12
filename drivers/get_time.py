@@ -10,7 +10,7 @@ import datetime
 # stamp
 
 def parse_gps(data):
-    if data[0:6] == "$GPRMC":
+    if data[0:6] == "$GPRMC" or data[0:6] == "$GNRMC":  #handles different standards
         ser_data = data.split(",")
         if ser_data[2] == "V":
             print("No satellite data!")
@@ -36,7 +36,7 @@ while True:
     result = parse_gps(data)
 
     if result != None:
-        file = open("current_gps_data.json", "w")
+        file = open("/home/pi/time-server/data/current_gps_data.json", "w")
         json_str = json.dumps({"lat":f"{result[2]}", "lon":f"{result[3]}", "unix_time":f"{result[4]}"})
 
         file.write(json_str)

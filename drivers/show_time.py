@@ -8,12 +8,12 @@ sp.flushInput()
 while True:
     try:
         data = sp.read_until()
-        print(re.sub('[0-9]', 'X', data.decode('ascii')))
+        print(data.decode('ascii'))
     except serial.SerialTimeoutException:
-        print('Timeout.')
+        print('Timeout!')
         continue
     except KeyboardInterrupt:
-        print('Keyboard Interrupt.')
+        print('Keyboard Interrupt!')
         break
 print('Exiting...')
 sp.close()
