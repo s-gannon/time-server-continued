@@ -3,23 +3,23 @@
     <head>
         <meta charset="utf-8">
         <title>Campanile Time Clock</title>
-        <link rel="stylesheet" href="style.css">
-        <meta http-equiv="refresh" content="1" />
+        <link rel="stylesheet" href="/static/style.css">
+        <meta http-equiv="refresh" content="1"/>
         <!-- TODO: show site favicon -->
     </head>
     <body>
         <main id="time">
             <!-- time inside of the "time datetime" section is for screereader accessibility -->
             <!-- time between the tags is the time visible on the screen -->
-            <span id="time-main">Clock Time (CST): <time id="main-time" datetime="%A">%B</time></span>
-            <span id="time-solar">Solar Time: <span id="solar-time">%C</span></span>
-            <span><time id="date" datetime="%D">%E</time></span>
+            <span id="time-main">Clock Time (CST): <time id="main-time" datetime="{{.ClockDateTime}}">{{.Clock}}</time></span>
+            <span id="time-solar">Solar Time: <span id="solar-time">{{.SolarTime}}</span></span>
+            <span><time id="date" datetime="{{.DateDateTime}}">{{.Date}}</time></span>
         </main>
 
         <footer>
             <p>Created By: Graham Butler, Nathan Harmon, and Spencer Gannon in Spring 2022</p>
             <p><a href="https://github.com/nathanharmon1/time-server">View our GitHub</a></p>
-            <p><a href="about.html">About the project</a></p>
+            <p><a href="/static/about.html">About the project</a></p>
         </footer>
     </body>
 </html>
