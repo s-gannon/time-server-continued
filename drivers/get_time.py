@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import time
 import json
 import serial
@@ -24,9 +25,9 @@ def parse_gps(data):
             lon_dir = (1 if ser_data[6] == "E" else -1)
 
             dt = datetime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
-            unix_time = dt.timestamp()
+            unix_time = int(dt.timestamp())
             print(f"{gmt_time} {date} {(float(lat)/100) * lat_dir} {(float(lon)/100) * lon_dir} {unix_time}")
-            return (gmt_time, date, (float(lat)/100) * lat_dir, (float(lon)/100) * lon_dir, unix_time)
+            return (int(gmt_time), date, (float(lat)/100) * lat_dir, (float(lon)/100) * lon_dir, unix_time)
 
 sleep_time = 1
 ser = serial.Serial("/dev/serial0", 9600, timeout = sleep_time)
