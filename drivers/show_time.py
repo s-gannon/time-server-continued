@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import re
 import serial
 
 sp = serial.Serial('/dev/serial0', 9600, timeout=1.0)

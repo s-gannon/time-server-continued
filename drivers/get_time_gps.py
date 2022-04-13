@@ -1,47 +1,69 @@
 #!/usr/bin/env python3
 
-import os
 import time
 import json
-import serial
 import datetime
+import serial
 
 # takes in data string and outputs either None if there's no signal or
 # a 5-tuple containing GMT time, date, latitude, longitude, and unix
 # stamp
 
 def parse_gps(data):
-    if data[0:6] == "$GPRMC" or data[0:6] == "$GNRMC":  #handles different standards
+    if data[0:6] == "$GPRMC" or data[0:6] == "$GNRMC":  # handles different standards
         ser_data = data.split(",")
         if ser_data[2] == "V":
             print("No satellite data!")
             return None
         else:
-            gmt_time = ser_data[1].split(".")[0]    #gets rid of stupid decimal
+            gmt_time = ser_data[1].split(".")[0]    # gets rid of stupid decimal
             date = ser_data[9]
+
             lat = ser_data[3]
-            lat_dir = (1 if ser_data[4] == "N" else -1)
             lon = ser_data[5]
+
+            # process the direction of the latitude and longitude
+            lat_dir = (1 if ser_data[4] == "N" else -1)
             lon_dir = (1 if ser_data[6] == "E" else -1)
 
-            dt = datetime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
-            unix_time = int(dt.timestamp())
-            print(f"{gmt_time} {date} {(float(lat)/100) * lat_dir} {(float(lon)/100) * lon_dir} {unix_time}")
-            return (int(gmt_time), date, (float(lat)/100) * lat_dir, (float(lon)/100) * lon_dir, unix_time)
+            # convert date from the sensor to unix time in GMT
+            current_datetime = datetime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
+            unix_time = int(current_datetime.timestamp())
 
-sleep_time = 1
-ser = serial.Serial("/dev/serial0", 9600, timeout = sleep_time)
+            # format lat and long for readable output
+            lat_format = (float(lat)/100) * lat_dir
+            lon_format = (float(lon)/100) * lon_dir
+
+            print(f"{gmt_time} {date} {lat_format} {lon_format} {unix_time}")
+            return int(gmt_time), date, lat_format, lon_format, unix_time
+    else:
+        # if the data received from the sensor is not of a known format, don't parse
+        print("Satellite data is in an unreadable format.")
+        return None
+
+SLEEP_TIME = 1
+ser = serial.Serial("/dev/serial0", 9600, timeout = SLEEP_TIME)
 ser.flushInput()
+
 while True:
-    data = ser.readline().decode("ascii")
-    result = parse_gps(data)
+    try:
+        data = ser.readline().decode("ascii")
+        result = parse_gps(data)
 
-    if result != None:
-        file = open("/home/pi/time-server/data/current_gps_data.json", "w")
-        json_str = json.dumps({"lat":f"{result[2]}", "lon":f"{result[3]}", "unix_time":f"{result[4]}"})
+        # if there is GPS data, write it to disk in JSON format
+        if result is not None:
+            with open("/home/pi/time-server/data/current_gps_data.json", "w") as file:
+                json_str = json.dumps({"lat":f"{result[2]}", "lon":f"{result[3]}", "unix_time":f"{result[4]}"})
 
-        file.write(json_str)
-        file.write("\n")
-        file.close()
-    time.sleep(sleep_time)
+                file.write(json_str)
+                file.write("\n")
+    except serial.SerialTimeoutException:
+        print("Serial timeout...")
+        continue
+    except KeyboardInterrupt:
+        print("Keyboard Interrupt!")
+        break
+
+    time.sleep(SLEEP_TIME)
+
 ser.close()
