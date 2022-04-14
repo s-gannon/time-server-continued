@@ -9,7 +9,7 @@ import (
 )
 
 // port to run the webserver on
-const port = "8080"
+const PORT = "8080"
 
 // variables in the web clock template
 type Data struct {
@@ -34,10 +34,10 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// run the server and print status notifications
-	fmt.Printf("Starting HTTP server on port %s...\n", port)
-	err := http.ListenAndServe(":"+port, nil)
+	fmt.Printf("Starting HTTP server on port %s...\n", PORT)
+	err := http.ListenAndServe(":"+PORT, nil)
 	if err != nil {
-			fmt.Printf("Error starting the HTTP server on port %s. Something else may be running already...\n", port)
+			fmt.Printf("Error starting the HTTP server on port %s. Something else may be running already...\n", PORT)
 	}
 }
 
