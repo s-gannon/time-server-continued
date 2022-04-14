@@ -1,0 +1,11 @@
+[Unit]
+Description=Webclock to display local and solar time
+After=openntpd.service
+
+[Service]
+ExecStart=/usr/bin/webclock
+ExecReload=/usr/bin/kill -SIGUSR1 $MAINPID
+User=%i
+
+[Install]
+WantedBy=graphical.target
