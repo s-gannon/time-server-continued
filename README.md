@@ -2,7 +2,7 @@
 
 A CS-358 project at Valparaiso University to keep accurate time for the James S. Markiewicz Solar Energy Research Facility.
 
-![Image of clock displaying clock and solar time.](pictures/clock_preview.png)
+![Image of clock displaying clock and solar time.](assets/clock_preview.png)
 
 ## How to use / Installation
 
