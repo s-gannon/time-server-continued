@@ -14,11 +14,11 @@ Coming Soon
 
 ## Source Code File Structure
 
-./clock | Files related to clock webserver and display.
+./clock | Webserver displaying clock time, solar time, and other information for view.
 
-./solarconversion | Files related to the conversion between clock and solar time.
+./solarconversion | Go library to convert clock time to solar time.
 
-./solarcli | Files to allow for command-line conversions to solar time.
+./solarcli | Command line interface to aid with conversion to solar time.
 
 ./drivers | Files related to getting data off of hardware devices.
 
@@ -26,7 +26,7 @@ Coming Soon
 
 ./openntpd | Configuration files relevent to the network time protocol daemon.
 
-./pictures | Pictures and other resources for displaying on GitHub
+./assets | Pictures and other resources for displaying on GitHub
 
 ## Unit Testing and Linting
 

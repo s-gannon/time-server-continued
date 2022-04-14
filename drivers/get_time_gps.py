@@ -43,7 +43,9 @@ def parse_gps(raw_data):
         return None
 
 SLEEP_TIME = 1
-ser = serial.Serial("/dev/serial0", 9600, timeout = SLEEP_TIME)
+DEVICE = "/dev/serial0"
+
+ser = serial.Serial(DEVICE, 9600, timeout = SLEEP_TIME)
 ser.flushInput()
 
 while True:
