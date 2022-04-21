@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Campanile Time Clock</title>
         <link rel="stylesheet" href="/static/style.css">
-        <meta http-equiv="refresh" content="1"/>
+        <meta http-equiv="refresh" content="0.9"/>
     </head>
     <body>
         <main id="time">
@@ -12,7 +12,7 @@
             <!-- time between the tags is the time visible on the screen -->
             <span id="time-main">Clock Time (CST): <time id="main-time" datetime="{{.ClockDateTime}}">{{.Clock}}</time></span>
             <span id="time-solar">Solar Time: <span id="solar-time">{{.SolarTime}}</span></span>
-            <span><time id="date" datetime="{{.DateDateTime}}">{{.Date}}</time></span>
+            <span><time id="date">{{.Date}}</time></span>
         </main>
 
         <!-- links to Github and about pages, at bottom of both web pages -->

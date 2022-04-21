@@ -16,7 +16,6 @@ type Data struct {
 		ClockDateTime string
 		Clock string
 		SolarTime string
-		DateDateTime string
 		Date string
 }
 
@@ -55,13 +54,12 @@ func getData() Data {
 	currentFormat := formatTime(current)
 	solarFormat := formatTime(solarTime)
 
-	date := time.Unix(current, 0).Format("January 1, 2006")
+	date := time.Unix(current, 0).Format("January 2, 2006")
 
 	data := Data {
 		ClockDateTime: currentFormat,
 		Clock: currentFormat,
 		SolarTime: solarFormat,
-		DateDateTime: date,
 		Date: date,
 	}
 
