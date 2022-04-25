@@ -39,7 +39,9 @@ def parse_gps(raw_data):
             return int(gmt_time), date, lat_format, lon_format, unix_time
     else:
         # if the data received from the sensor is not of a known format, don't parse
-        print("Satellite data is in an unreadable format.")
+
+        # don't actually print the below line otherwise it will be printed repeatedly even on working systems
+        #print("Satellite data is in an unreadable format.")
         return None
 
 SLEEP_TIME = 1
