@@ -2,8 +2,8 @@
 
 import time
 import json
-import datetime
 import serial
+from datetime import datetime, tzinfo
 
 # takes in data string and outputs either None if there's no signal or
 # a 5-tuple containing GMT time, date, latitude, longitude, and unix
@@ -28,7 +28,8 @@ def parse_gps(raw_data):
             lon_dir = (1 if ser_data[6] == "E" else -1)
 
             # convert date from the sensor to unix time in GMT
-            current_datetime = datetime.datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
+            current_datetime = datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
+			current_datetime = current_datetime.replace(tzinfo=None)
             unix_time = int(current_datetime.timestamp())
 
             # format lat and long for readable output
