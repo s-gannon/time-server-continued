@@ -29,7 +29,7 @@ def parse_gps(raw_data):
 
             # convert date from the sensor to unix time in GMT
             current_datetime = datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
-			current_datetime = current_datetime.replace(tzinfo=None)
+            current_datetime = current_datetime.replace(tzinfo=None)
             unix_time = int(current_datetime.timestamp())
 
             # format lat and long for readable output
