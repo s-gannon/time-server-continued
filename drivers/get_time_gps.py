@@ -9,6 +9,8 @@ from datetime import datetime, tzinfo
 # a 5-tuple containing GMT time, date, latitude, longitude, and unix
 # stamp
 
+TIMEZONE_GMT_DIFF = -5
+
 def parse_gps(raw_data):
     if raw_data[0:6] == "$GPRMC" or raw_data[0:6] == "$GNRMC":  # handles different standards
         ser_data = raw_data.split(",")
@@ -30,7 +32,7 @@ def parse_gps(raw_data):
             # convert date from the sensor to unix time in GMT
             current_datetime = datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
             current_datetime = current_datetime.replace(tzinfo=None)
-            unix_time = int(current_datetime.timestamp())
+            unix_time = int(current_datetime.timestamp()) + TIMEZONE_GMT_DIFF*60*60
 
             # format lat and long for readable output
             lat_format = (float(lat)/100) * lat_dir
