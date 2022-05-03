@@ -32,7 +32,7 @@ def parse_gps(raw_data):
             # convert date from the sensor to unix time in GMT
             current_datetime = datetime.strptime(gmt_time + date, "%H%M%S%d%m%y")
             current_datetime = current_datetime.replace(tzinfo=None)
-            unix_time = int(current_datetime.timestamp()) + TIMEZONE_GMT_DIFF*60*60
+            unix_time = int(current_datetime.timestamp())# + TIMEZONE_GMT_DIFF*60*60
 
             # format lat and long for readable output
             lat_format = (float(lat)/100) * lat_dir
@@ -47,7 +47,7 @@ def parse_gps(raw_data):
         #print("Satellite data is in an unreadable format.")
         return None
 
-SLEEP_TIME = 1
+#SLEEP_TIME = 1
 DEVICE = "/dev/serial0"
 
 ser = serial.Serial(DEVICE, 9600, timeout = SLEEP_TIME)
@@ -74,6 +74,6 @@ while True:
         print("Keyboard Interrupt!")
         break
 
-    time.sleep(SLEEP_TIME)
+    #time.sleep(SLEEP_TIME)
 
 ser.close()
