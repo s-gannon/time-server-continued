@@ -69,7 +69,7 @@ func getData() Data {
 // Helper function to calculate the correction factor to solar time
 func convertToSolar(unix int64) int64 {
 	const zone = -6
-	const long = 87.037403
+	const long = 87.023089
 
 	meridian := solar.LocalStandardTimeMeridian(zone)
 	eqnOfTime := 60 * solar.EquationOfTime(time.Now().YearDay())
