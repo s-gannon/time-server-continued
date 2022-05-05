@@ -11,6 +11,10 @@ import (
 // port to run the webserver on
 const PORT = "8080"
 
+// location and time zone information for solar time conversion
+const zone = -6
+const long = 87.023089
+
 // variables in the web clock template
 type Data struct {
 		ClockDateTime string
@@ -68,9 +72,6 @@ func getData() Data {
 
 // Helper function to calculate the correction factor to solar time
 func convertToSolar(unix int64) int64 {
-	const zone = -6
-	const long = 87.023089
-
 	meridian := solar.LocalStandardTimeMeridian(zone)
 	eqnOfTime := 60 * solar.EquationOfTime(time.Now().YearDay())
 
