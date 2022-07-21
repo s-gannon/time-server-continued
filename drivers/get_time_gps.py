@@ -15,7 +15,7 @@ def parse_gps(raw_data):
     if raw_data[0:6] == "$GPRMC" or raw_data[0:6] == "$GNRMC":  # handles different standards
         ser_data = raw_data.split(",")
 
-        if ser_data[2] == "V":
+        if ser_data[2] == "V" and ser_data[1] == "":
             print("No satellite data!")
             return None
         else:
