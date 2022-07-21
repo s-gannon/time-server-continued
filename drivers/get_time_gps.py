@@ -35,8 +35,14 @@ def parse_gps(raw_data):
             unix_time = int(current_datetime.timestamp()) + TIMEZONE_GMT_DIFF*60*60
 
             # format lat and long for readable output
-            lat_format = (float(lat)/100) * lat_dir
-            lon_format = (float(lon)/100) * lon_dir
+			try:
+            	lat_format = (float(lat)/100) * lat_dir
+			except:
+				lat_format = "NA"
+			try:
+            	lon_format = (float(lon)/100) * lon_dir
+			except:
+				lon_format = "NA"
 
             print(f"{gmt_time} {date} {lat_format} {lon_format} {unix_time}")
             return int(gmt_time), date, lat_format, lon_format, unix_time
