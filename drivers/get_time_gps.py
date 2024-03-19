@@ -15,7 +15,7 @@ def parse_gps(raw_data):
     if raw_data[0:6] == "$GPRMC" or raw_data[0:6] == "$GNRMC":  # handles different standards
         ser_data = raw_data.split(",")
 
-        if ser_data[2] == "V":
+        if ser_data[2] == "V" and ser_data[1] == "":
             print("No satellite data!")
             return None
         else:
@@ -35,8 +35,14 @@ def parse_gps(raw_data):
             unix_time = int(current_datetime.timestamp()) + TIMEZONE_GMT_DIFF*60*60
 
             # format lat and long for readable output
-            lat_format = (float(lat)/100) * lat_dir
-            lon_format = (float(lon)/100) * lon_dir
+            try:
+                lat_format = (float(lat)/100) * lat_dir
+            except:
+                lat_format = "NA"
+            try:
+                lon_format = (float(lon)/100) * lon_dir
+            except:
+                lon_format = "NA"
 
             print(f"{gmt_time} {date} {lat_format} {lon_format} {unix_time}")
             return int(gmt_time), date, lat_format, lon_format, unix_time
